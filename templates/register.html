@@ -25,7 +25,8 @@
                   </div>
 
                 <div class=" col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                  <form >
+
+                  <form action="/registro" method="POST" >
                     <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                         <h4 >Registro</h4>
 
@@ -37,33 +38,36 @@
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                      <input type="text" id="registerUser" class="form-control form-control-lg"
-                        placeholder="Ingresa tu nombre de Usuario" />
+                      <input type="text" id="registerUser" class="form-control form-control-lg "
+                        placeholder="Ingresa tu nombre de Usuario" name="username" required="" oninvalid="this.setCustomValidity('Ingresa usuario')" oninput="setCustomValidity('')"/>
+                        
                       
                     </div>
           
                     <!-- Password input -->
                     <div class="form-outline mb-4">
                       <input type="password" id="registerPass" class="form-control form-control-lg"
-                        placeholder="Contraseña" />
+                        placeholder="Contraseña" name="password" required="" oninvalid="this.setCustomValidity('Ingresa contraseña')" oninput="setCustomValidity('')" />
                       
                     </div>
 
                     <div class="form-outline mb-4">
                         <input type="text" id="registerName" class="form-control form-control-lg"
-                          placeholder="Ingresa tu nombre" />
+                          placeholder="Ingresa tu nombre" name="name"  required="" oninvalid="this.setCustomValidity('Ingresa password')" oninput="setCustomValidity('')"/>
                         
                       </div>
 
                       <div class="form-outline mb-4">
                         <input type="email" id="registerEmail" class="form-control form-control-lg"
-                          placeholder="Email" />
+                          placeholder="Email" name="email" required="" oninvalid="this.setCustomValidity('Ingresa email valido')" oninput="setCustomValidity('')"/>
                         
                       </div>  
           
-          
+                      {% if error %}
+                        <p>{{ error }}</p>
+                      {% endif %}
                     <div class="text-center text-lg-start mt-4 pt-2">
-                      <button href=login type="button" class="btn btn-primary btn-lg"
+                      <button  type="submit" class="btn btn-primary btn-lg"
                         style="padding-left: 2.5rem; padding-right: 2.5rem;">Registrarse</button>
                     </div>
           
