@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import database as dbase
 from  user import User
+from prediction import Prediction
+from bson.json_util import dumps
 
 
 db=dbase.dbConnection()
@@ -14,7 +16,7 @@ app.secret_key = "mysecretkey"
 
 model=pickle.load(open('rf_model.pkl','rb'))
 
-@app.route('/prediction',methods=['POST'])
+"""@app.route('/prediction',methods=['POST'])
 def prediction():
     event = json.loads(request.data)
     values=event['values']
@@ -23,16 +25,45 @@ def prediction():
     pre=np.array(values)
     res=model.predict(pre)
     print(res)
-    return str(res[:3])
-    
+    return str(res[:3])"""
+
+
 @app.route('/prediction/<int:npred>',methods=['GET'])
 def getnpred(npred):
     return str(npred)
 
+## Prediccion data
+@app.route('/data')
+def getdata():
+    datapred=[]
+    predictions=db['prediction']
+    for cs in predictions.find({},{'_id':False, 'data_iniSE':False}):
+        values=list(cs.values())
+        datapred.append(values)
+    print(datapred[-6:])
+    return jsonify(datapred)
+
+
 ## Dashboard
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    predictions=db['prediction']
+    casesdata=predictions.find()
+    return render_template('index.html', predictions=casesdata)
+
+
+@app.route('/button', methods=['POST'])
+def get_button_status():
+    selected_option = request.json['mySelect']
+    if selected_option != 'default':
+        show_button= True
+    else:
+        show_button= False
+    print(selected_option)
+    return jsonify({'show_button': show_button})
+
+
+
 
 ## Login View
 @app.route('/')
